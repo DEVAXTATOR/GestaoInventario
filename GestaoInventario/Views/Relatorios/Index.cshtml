@@ -1,0 +1,36 @@
+﻿@model IEnumerable<GestaoInventario.Models.MovimentacaoStock>
+
+@{
+    ViewData["Title"] = "Movimentações de Stock";
+}
+
+<h2>Movimentações de Stock</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Tipo</th>
+            <th>Data</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Produto.Nome</td>
+                    <td>@item.Quantidade</td>
+                    <td>@(item.IsEntrada ? "Entrada" : "Saída")</td>
+                    <td>@item.Data.ToString("dd/MM/yyyy HH:mm")</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<p>
+    <a asp-action="Create">Registrar Movimentação</a>
+</p>

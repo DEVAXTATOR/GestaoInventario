@@ -1,0 +1,27 @@
+﻿@model IEnumerable<GestaoInventario.Models.Categoria>
+
+@{
+    ViewData["Title"] = "Categorias";
+}
+
+<h2>Categorias</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nome</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Nome</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p>
+    <a asp-action="Create">Criar Nova Categoria</a>
+</p>
