@@ -1,36 +1,13 @@
-﻿@model IEnumerable<GestaoInventario.Models.MovimentacaoStock>
-
-@{
-    ViewData["Title"] = "Movimentações de Stock";
+﻿@{
+    Layout = "../Shared/_Layout";
+    ViewData["Title"] = "Relatórios";
 }
 
-<h2>Movimentações de Stock</h2>
+<h1>@ViewData["Title"]</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Produto</th>
-            <th>Quantidade</th>
-            <th>Tipo</th>
-            <th>Data</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model != null)
-        {
-            foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.Produto.Nome</td>
-                    <td>@item.Quantidade</td>
-                    <td>@(item.IsEntrada ? "Entrada" : "Saída")</td>
-                    <td>@item.Data.ToString("dd/MM/yyyy HH:mm")</td>
-                </tr>
-            }
-        }
-    </tbody>
-</table>
-
-<p>
-    <a asp-action="Create">Registrar Movimentação</a>
-</p>
+<p>Abaixo está a lista de relatórios disponíveis:</p>
+<ul>
+    <li><a asp-controller="Relatorios" asp-action="Detalhes" asp-route-id="1">Relatório de Vendas</a></li>
+    <li><a asp-controller="Relatorios" asp-action="Detalhes" asp-route-id="2">Relatório de Stock</a></li>
+    <li><a asp-controller="Relatorios" asp-action="Detalhes" asp-route-id="3">Relatório de Compras</a></li>
+</ul>

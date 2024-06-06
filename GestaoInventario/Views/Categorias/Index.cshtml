@@ -3,25 +3,37 @@
 @{
     ViewData["Title"] = "Categorias";
 }
+@{
+    Layout = "./_Layout";
+}
 
-<h2>Categorias</h2>
+<h1>Categorias</h1>
 
+<p>
+    <a class="btn btn-primary" asp-action="Create">Criar Nova Categoria</a>
+</p>
 <table class="table">
     <thead>
         <tr>
-            <th>Nome</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.Nome</td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                </td>
             </tr>
         }
     </tbody>
 </table>
-
-<p>
-    <a asp-action="Create">Criar Nova Categoria</a>
-</p>

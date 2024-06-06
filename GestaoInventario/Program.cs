@@ -7,14 +7,15 @@ using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Adicionar serviços ao contêiner.
 builder.Services.AddRazorPages();
+builder.Services.AddControllersWithViews(); // Adiciona suporte para MVC
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configurar o pipeline de requisição HTTP.
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();

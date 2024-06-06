@@ -1,0 +1,38 @@
+﻿@model GestaoInventario.Models.Produto
+
+@{
+    ViewData["Title"] = "Detalhes do Produto";
+}
+@{
+    Layout = "./_Layout";
+}
+<h1>Detalhes do Produto</h1>
+
+<div>
+    <h4>Produto</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Nome
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Nome
+        </dd>
+        <dt class="col-sm-2">
+            Preço
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Preco
+        </dd>
+        <dt class="col-sm-2">
+            Categoria
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Categoria.Nome
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">Editar</a> |
+    <a asp-action="Index" class="btn btn-primary">Voltar à lista</a>
+</div>
