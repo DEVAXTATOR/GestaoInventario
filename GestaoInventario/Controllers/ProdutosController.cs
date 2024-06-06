@@ -2,8 +2,8 @@
 using GestaoInventario.Data;
 using GestaoInventario.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace GestaoInventario.Controllers
 {

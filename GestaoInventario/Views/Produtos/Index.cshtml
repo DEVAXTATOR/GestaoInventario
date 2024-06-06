@@ -18,31 +18,26 @@
             <tr>
                 <th>Nome</th>
                 <th>Preço</th>
+                <th>Quantidade</th>
                 <th>Categoria</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Computador</td>
-                <td>1500</td>
-                <td>Eletrónicos</td>
-                <td>
-                    <a class="btn btn-secondary" asp-controller="Produtos" asp-action="Edit" asp-route-id="1">Editar</a> |
-                    <a class="btn btn-info" asp-controller="Produtos" asp-action="Details" asp-route-id="1">Detalhes</a> |
-                    <a class="btn btn-danger" asp-controller="Produtos" asp-action="Delete" asp-route-id="1">Eliminar</a>
-                </td>
-            </tr>
-            <tr>
-                <td>Cadeira</td>
-                <td>85</td>
-                <td>Móveis</td>
-                <td>
-                    <a class="btn btn-secondary" asp-controller="Produtos" asp-action="Edit" asp-route-id="2">Editar</a> |
-                    <a class="btn btn-info" asp-controller="Produtos" asp-action="Details" asp-route-id="2">Detalhes</a> |
-                    <a class="btn btn-danger" asp-controller="Produtos" asp-action="Delete" asp-route-id="2">Eliminar</a>
-                </td>
-            </tr>
+            @foreach (var produto in Model)
+            {
+                <tr>
+                    <td>@produto.Nome</td>
+                    <td>@produto.Preco</td>
+                    <td>@produto.Quantidade</td>
+                    <td>@produto.Categoria.Nome</td>
+                    <td>
+                        <a class="btn btn-secondary" asp-controller="Produtos" asp-action="Edit" asp-route-id="@produto.Id">Editar</a> |
+                        <a class="btn btn-info" asp-controller="Produtos" asp-action="Details" asp-route-id="@produto.Id">Detalhes</a> |
+                        <a class="btn btn-danger" asp-controller="Produtos" asp-action="Delete" asp-route-id="@produto.Id">Eliminar</a>
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 </body>

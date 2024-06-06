@@ -18,17 +18,7 @@ namespace GestaoInventario.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Dados de semente para Categoria
-            modelBuilder.Entity<Categoria>().HasData(
-                new Categoria { Id = 1, Nome = "Eletrónicos" },
-                new Categoria { Id = 2, Nome = "Móveis" }
-            );
-
-            // Dados de semente para Produto
-            modelBuilder.Entity<Produto>().HasData(
-                new Produto { Id = 1, Nome = "Computador", CategoriaId = 1, Quantidade = 10, Preco = 1500.00 },
-                new Produto { Id = 2, Nome = "Cadeira", CategoriaId = 2, Quantidade = 50, Preco = 85.00 }
-            );
+            // Configuração adicional pode ser feita aqui, se necessário
         }
     }
 }
