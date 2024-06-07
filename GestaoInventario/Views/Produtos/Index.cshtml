@@ -1,4 +1,4 @@
-﻿@model IEnumerable<GestaoInventario.Models.Produto>
+@model IEnumerable<GestaoInventario.Models.Produto>
 
 @{
     Layout = "_Layout";
@@ -27,17 +27,13 @@
                 <td>@produto.Nome</td>
                 <td>@produto.Preco</td>
                 <td>@produto.Quantidade</td>
-                <td>@produto.Categoria.Nome</td>
+                <td>@produto.Categoria?.Nome</td>
                 <td>
-                    <button class="btn btn-secondary editar" data-id="@produto.Id">Editar</button> |
-                    <button class="btn btn-info detalhes" data-id="@produto.Id">Detalhes</button> |
-                    <button class="btn btn-danger eliminar" data-id="@produto.Id">Eliminar</button>
+                    <a class="btn btn-secondary" asp-controller="Produtos" asp-action="Edit" asp-route-id="@produto.Id">Editar</a> |
+                    <a class="btn btn-info" asp-controller="Produtos" asp-action="Details" asp-route-id="@produto.Id">Detalhes</a> |
+                    <a class="btn btn-danger" asp-controller="Produtos" asp-action="Delete" asp-route-id="@produto.Id">Eliminar</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
-@section Scripts {
-    <script src="~/js/site.js"></script>
-}

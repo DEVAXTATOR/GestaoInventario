@@ -1,39 +1,38 @@
-﻿@model IEnumerable<GestaoInventario.Models.MovimentacaoStock>
+
+@model IEnumerable<GestaoInventario.Models.MovimentacaoStock>
 
 @{
-    ViewData["Title"] = "Movimentações de Stock";
-}
-@{
-    Layout = "./_Layout";
+    Layout = "_Layout";
 }
 
-<h2>Movimentações de Stock</h2>
+<h1>Movimentações de Stock</h1>
+
+<p>
+    <a class="btn btn-primary" asp-controller="MovimentacoesStock" asp-action="Create">Criar Novo</a>
+</p>
 
 <table class="table">
     <thead>
         <tr>
             <th>Produto</th>
             <th>Quantidade</th>
-            <th>Tipo</th>
             <th>Data</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        @if (Model != null)
+        @foreach (var movimentacao in Model)
         {
-            foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.Produto.Nome</td>
-                    <td>@item.Quantidade</td>
-                    <td>@item.Tipo</td>
-                    <td>@item.Data.ToString("dd/MM/yyyy HH:mm")</td>
-                </tr>
-            }
+            <tr>
+                <td>@movimentacao.Produto.Nome</td>
+                <td>@movimentacao.Quantidade</td>
+                <td>@movimentacao.Data.ToShortDateString()</td>
+                <td>
+                    <a class="btn btn-secondary" asp-controller="MovimentacoesStock" asp-action="Edit" asp-route-id="@movimentacao.Id">Editar</a> |
+                    <a class="btn btn-info" asp-controller="MovimentacoesStock" asp-action="Details" asp-route-id="@movimentacao.Id">Detalhes</a> |
+                    <a class="btn btn-danger" asp-controller="MovimentacoesStock" asp-action="Delete" asp-route-id="@movimentacao.Id">Eliminar</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
-
-<p>
-    <a asp-action="Create">Registrar Movimentação</a>
-</p>

@@ -1,13 +1,12 @@
-﻿@{
-    Layout = "../Shared/_Layout";
-    ViewData["Title"] = "Relatórios";
+
+@{
+    Layout = "_Layout";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1>Relatórios</h1>
 
-<p>Abaixo está a lista de relatórios disponíveis:</p>
-<ul>
-    <li><a asp-controller="Relatorios" asp-action="Detalhes" asp-route-id="1">Relatório de Vendas</a></li>
-    <li><a asp-controller="Relatorios" asp-action="Detalhes" asp-route-id="2">Relatório de Stock</a></li>
-    <li><a asp-controller="Relatorios" asp-action="Detalhes" asp-route-id="3">Relatório de Compras</a></li>
-</ul>
+<p>
+    <a class="btn btn-primary" asp-controller="Relatorios" asp-action="Detalhes" asp-route-id="1">Relatório de Vendas</a> |
+    <a class="btn btn-primary" asp-controller="Relatorios" asp-action="Detalhes" asp-route-id="2">Relatório de Stock</a> |
+    <a class="btn btn-primary" asp-controller="Relatorios" asp-action="Detalhes" asp-route-id="3">Relatório de Compras</a>
+</p>

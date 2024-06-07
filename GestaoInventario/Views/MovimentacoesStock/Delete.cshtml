@@ -1,28 +1,22 @@
 
-@model GestaoInventario.Models.Produto
+@model GestaoInventario.Models.MovimentacaoStock
 
 @{
     Layout = "_Layout";
 }
 
-<h1>Eliminar Produto</h1>
+<h1>Eliminar Movimentação de Stock</h1>
 
-<h3>Tem a certeza que deseja eliminar este produto?</h3>
+<h3>Tem a certeza que deseja eliminar esta movimentação de stock?</h3>
 <div>
-    <h4>Produto</h4>
+    <h4>Movimentação</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            Nome
+            Produto
         </dt>
         <dd class = "col-sm-10">
-            @Model.Nome
-        </dd>
-        <dt class = "col-sm-2">
-            Preço
-        </dt>
-        <dd class = "col-sm-10">
-            @Model.Preco
+            @Model.Produto.Nome
         </dd>
         <dt class = "col-sm-2">
             Quantidade
@@ -31,10 +25,10 @@
             @Model.Quantidade
         </dd>
         <dt class = "col-sm-2">
-            Categoria
+            Data
         </dt>
         <dd class = "col-sm-10">
-            @Model.Categoria.Nome
+            @Model.Data.ToShortDateString()
         </dd>
     </dl>
     
