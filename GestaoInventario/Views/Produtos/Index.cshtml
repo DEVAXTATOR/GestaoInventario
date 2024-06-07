@@ -1,44 +1,43 @@
-﻿@{
-    Layout = "./_Layout";
+﻿@model IEnumerable<GestaoInventario.Models.Produto>
+
+@{
+    Layout = "_Layout";
 }
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="~/css/site.css" />
-</head>
-<body>
-    <h1>Produtos</h1>
 
-    <p>
-        <a class="btn btn-primary" asp-controller="Produtos" asp-action="Create">Criar Novo</a>
-    </p>
+<h1>Produtos</h1>
 
-    <table class="table">
-        <thead>
+<p>
+    <a class="btn btn-primary" asp-controller="Produtos" asp-action="Create">Criar Novo</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Preço</th>
+            <th>Quantidade</th>
+            <th>Categoria</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var produto in Model)
+        {
             <tr>
-                <th>Nome</th>
-                <th>Preço</th>
-                <th>Quantidade</th>
-                <th>Categoria</th>
-                <th></th>
+                <td>@produto.Nome</td>
+                <td>@produto.Preco</td>
+                <td>@produto.Quantidade</td>
+                <td>@produto.Categoria.Nome</td>
+                <td>
+                    <button class="btn btn-secondary editar" data-id="@produto.Id">Editar</button> |
+                    <button class="btn btn-info detalhes" data-id="@produto.Id">Detalhes</button> |
+                    <button class="btn btn-danger eliminar" data-id="@produto.Id">Eliminar</button>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var produto in Model)
-            {
-                <tr>
-                    <td>@produto.Nome</td>
-                    <td>@produto.Preco</td>
-                    <td>@produto.Quantidade</td>
-                    <td>@produto.Categoria.Nome</td>
-                    <td>
-                        <a class="btn btn-secondary" asp-controller="Produtos" asp-action="Edit" asp-route-id="@produto.Id">Editar</a> |
-                        <a class="btn btn-info" asp-controller="Produtos" asp-action="Details" asp-route-id="@produto.Id">Detalhes</a> |
-                        <a class="btn btn-danger" asp-controller="Produtos" asp-action="Delete" asp-route-id="@produto.Id">Eliminar</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</body>
-</html>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="~/js/site.js"></script>
+}

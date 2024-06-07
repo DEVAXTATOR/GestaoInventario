@@ -1,123 +1,154 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using GestaoInventario.Data;
-using GestaoInventario.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using GestaoInventario.Data;
+using GestaoInventario.Models;
 using System.Linq;
+using System.Threading.Tasks;
 
-namespace GestaoInventario.Controllers
+public class ProdutosController : Controller
 {
-    public class ProdutosController : Controller
+    private readonly ApplicationDbContext _context;
+
+    public ProdutosController(ApplicationDbContext context)
     {
-        private readonly ApplicationDbContext _context;
+        _context = context;
+    }
 
-        public ProdutosController(ApplicationDbContext context)
+    // GET: Produtos
+    public async Task<IActionResult> Index()
+    {
+        var produtos = _context.Produtos.Include(p => p.Categoria);
+        return View(await produtos.ToListAsync());
+    }
+
+    // GET: Produtos/Details/5
+    public async Task<IActionResult> Details(int? id)
+    {
+        if (id == null)
         {
-            _context = context;
+            return NotFound();
         }
 
-        public IActionResult Index()
+        var produto = await _context.Produtos
+            .Include(p => p.Categoria)
+            .FirstOrDefaultAsync(m => m.Id == id);
+        if (produto == null)
         {
-            var produtos = _context.Produtos.Include(p => p.Categoria).ToList();
-            return View(produtos);
+            return NotFound();
         }
 
-        public IActionResult Create()
+        return View(produto);
+    }
+
+    // GET: Produtos/Create
+    public IActionResult Create()
+    {
+        ViewBag.CategoriaId = new SelectList(_context.Categorias, "Id", "Nome");
+        return View();
+    }
+
+    // POST: Produtos/Create
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create([Bind("Id,Nome,Quantidade,Preco,CategoriaId,StockMinimo")] Produto produto)
+    {
+        if (ModelState.IsValid)
         {
-            ViewBag.Categorias = new SelectList(_context.Categorias, "Id", "Nome");
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Create(Produto produto)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(produto);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewBag.Categorias = new SelectList(_context.Categorias, "Id", "Nome", produto.CategoriaId);
-            return View(produto);
-        }
-
-        public IActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var produto = _context.Produtos.Find(id);
-            if (produto == null)
-            {
-                return NotFound();
-            }
-            ViewBag.Categorias = new SelectList(_context.Categorias, "Id", "Nome", produto.CategoriaId);
-            return View(produto);
-        }
-
-        [HttpPost]
-        public IActionResult Edit(int id, Produto produto)
-        {
-            if (id != produto.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                _context.Update(produto);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewBag.Categorias = new SelectList(_context.Categorias, "Id", "Nome", produto.CategoriaId);
-            return View(produto);
-        }
-
-        public IActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var produto = _context.Produtos
-                .Include(p => p.Categoria)
-                .FirstOrDefault(m => m.Id == id);
-            if (produto == null)
-            {
-                return NotFound();
-            }
-
-            return View(produto);
-        }
-
-        public IActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var produto = _context.Produtos
-                .Include(p => p.Categoria)
-                .FirstOrDefault(m => m.Id == id);
-            if (produto == null)
-            {
-                return NotFound();
-            }
-
-            return View(produto);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            var produto = _context.Produtos.Find(id);
-            _context.Produtos.Remove(produto);
-            _context.SaveChanges();
+            _context.Add(produto);
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        ViewBag.CategoriaId = new SelectList(_context.Categorias, "Id", "Nome", produto.CategoriaId);
+        return View(produto);
+    }
+
+    // GET: Produtos/Edit/5
+    public async Task<IActionResult> Edit(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var produto = await _context.Produtos.FindAsync(id);
+        if (produto == null)
+        {
+            return NotFound();
+        }
+        ViewBag.CategoriaId = new SelectList(_context.Categorias, "Id", "Nome", produto.CategoriaId);
+        return View(produto);
+    }
+
+    // POST: Produtos/Edit/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Quantidade,Preco,CategoriaId,StockMinimo")] Produto produto)
+    {
+        if (id != produto.Id)
+        {
+            return NotFound();
+        }
+
+        if (ModelState.IsValid)
+        {
+            try
+            {
+                _context.Update(produto);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProdutoExists(produto.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        ViewBag.CategoriaId = new SelectList(_context.Categorias, "Id", "Nome", produto.CategoriaId);
+        return View(produto);
+    }
+
+    // GET: Produtos/Delete/5
+    public async Task<IActionResult> Delete(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var produto = await _context.Produtos
+            .Include(p => p.Categoria)
+            .FirstOrDefaultAsync(m => m.Id == id);
+        if (produto == null)
+        {
+            return NotFound();
+        }
+
+        return View(produto);
+    }
+
+    // POST: Produtos/Delete/5
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        var produto = await _context.Produtos.FindAsync(id);
+        if (produto != null)
+        {
+            _context.Produtos.Remove(produto);
+            await _context.SaveChangesAsync();
+        }
+        return RedirectToAction(nameof(Index));
+    }
+    private bool ProdutoExists(int id)
+    {
+        return _context.Produtos.Any(e => e.Id == id);
     }
 }
+
