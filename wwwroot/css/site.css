@@ -1,0 +1,94 @@
+/* site.css */
+
+/* Define a margem para os botões */
+.btn {
+    margin-right: 5px;
+}
+
+/* Personalizações para a navbar */
+.navbar {
+    margin-bottom: 20px;
+}
+
+/* Estilos para tabelas */
+.table {
+    margin-top: 20px;
+}
+
+/* Footer styling */
+.footer {
+    margin-top: 20px;
+    padding: 10px 0;
+    background-color: #f8f9fa;
+    text-align: center;
+}
+
+/* Adicional custom styles */
+body {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.container {
+    max-width: 960px;
+}
+
+/* Estilos para cabeçalhos */
+h1, h2, h3 {
+    margin-top: 20px;
+}
+
+/* Estilos para links */
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+    a:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }
+
+/* Custom card styles */
+.card {
+    margin-top: 20px;
+}
+
+/* Estilos adicionais para formulários */
+.form-control {
+    margin-bottom: 10px;
+}
+
+.padding-right-15 {
+    padding-right: 15px;
+}
+
+/* Estilos para botões personalizados */
+.btn-custom {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+    .btn-custom:hover {
+        background-color: #0056b3;
+        color: white;
+    }
+
+.btn-custom-delete {
+    background-color: #dc3545;
+    color: white;
+}
+
+    .btn-custom-delete:hover {
+        background-color: #c82333;
+        color: white;
+    }

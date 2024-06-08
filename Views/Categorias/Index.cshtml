@@ -1,0 +1,33 @@
+@model IEnumerable<GestaoInventario.Models.Categoria>
+
+@{
+    Layout = "_Layout";
+}
+
+<h1>Categorias</h1>
+
+<p>
+    <a class="btn btn-primary" asp-controller="Categorias" asp-action="Create" data-action="Create" data-controller="Categorias">Criar Nova</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var categoria in Model)
+        {
+            <tr>
+                <td>@categoria.Nome</td>
+                <td>
+                    <a class="btn btn-secondary" asp-controller="Categorias" asp-action="Edit" asp-route-id="@categoria.Id" data-id="@categoria.Id" data-action="Edit" data-controller="Categorias">Editar</a> |
+                    <a class="btn btn-info" asp-controller="Categorias" asp-action="Details" asp-route-id="@categoria.Id" data-id="@categoria.Id" data-action="Details" data-controller="Categorias">Detalhes</a> |
+                    <a class="btn btn-danger" asp-controller="Categorias" asp-action="Delete" asp-route-id="@categoria.Id" data-id="@categoria.Id" data-action="Delete" data-controller="Categorias">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

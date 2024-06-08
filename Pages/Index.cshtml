@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@{
+    Layout = "./_Layout";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <h1>Bem-vindo ao Sistema de Gestão de Inventário</h1>
+
+    <p>Escolha uma das opções abaixo para começar:</p>
+    <ul>
+        <li><a asp-controller="Produtos" asp-action="Index">Gerir Produtos</a></li>
+        <li><a asp-controller="Categorias" asp-action="Index">Gerir Categorias</a></li>
+        <li><a asp-controller="MovimentacoesStock" asp-action="Index">Gerir Movimentações de Stock</a></li>
+        <li><a asp-controller="Relatorios" asp-action="Index">Ver Relatórios</a></li>
+    </ul>
+</body>
+</html>

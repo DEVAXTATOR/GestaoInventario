@@ -1,0 +1,37 @@
+@model IEnumerable<GestaoInventario.Models.MovimentacaoStock>
+
+@{
+    Layout = "_Layout";
+}
+
+<h1>Movimentações de Stock</h1>
+
+<p>
+    <a class="btn btn-primary" data-action="Create" data-controller="MovimentacoesStock">Criar Novo</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Data</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var movimentacao in Model)
+        {
+            <tr>
+                <td>@movimentacao.Produto.Nome</td>
+                <td>@movimentacao.Quantidade</td>
+                <td>@movimentacao.Data.ToShortDateString()</td>
+                <td>
+                    <a class="btn btn-secondary editar" data-id="@movimentacao.Id" data-action="Edit" data-controller="MovimentacoesStock">Editar</a> |
+                    <a class="btn btn-info detalhes" data-id="@movimentacao.Id" data-action="Details" data-controller="MovimentacoesStock">Detalhes</a> |
+                    <a class="btn btn-danger eliminar" data-id="@movimentacao.Id" data-action="Delete" data-controller="MovimentacoesStock">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

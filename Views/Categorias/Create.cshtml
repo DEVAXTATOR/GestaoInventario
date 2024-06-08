@@ -1,0 +1,33 @@
+﻿@model IEnumerable<GestaoInventario.Models.Categoria>
+
+@{
+    ViewData["Title"] = "Index";
+}
+@{
+    Layout = "./_Layout";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Criar Novo</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
