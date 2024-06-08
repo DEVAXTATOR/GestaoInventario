@@ -31,24 +31,11 @@ namespace GestaoInventario.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Nome")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Categorias");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Nome = "Eletrónicos"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Nome = "Móveis"
-                        });
                 });
 
             modelBuilder.Entity("GestaoInventario.Models.MovimentacaoStock", b =>
@@ -90,11 +77,10 @@ namespace GestaoInventario.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Nome")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Preco")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Preco")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Quantidade")
                         .HasColumnType("int");
@@ -107,26 +93,6 @@ namespace GestaoInventario.Migrations
                     b.HasIndex("CategoriaId");
 
                     b.ToTable("Produtos");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CategoriaId = 1,
-                            Nome = "Computador",
-                            Preco = 1500.0,
-                            Quantidade = 10,
-                            StockMinimo = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CategoriaId = 2,
-                            Nome = "Cadeira",
-                            Preco = 85.0,
-                            Quantidade = 50,
-                            StockMinimo = 0
-                        });
                 });
 
             modelBuilder.Entity("GestaoInventario.Models.MovimentacaoStock", b =>
@@ -143,12 +109,17 @@ namespace GestaoInventario.Migrations
             modelBuilder.Entity("GestaoInventario.Models.Produto", b =>
                 {
                     b.HasOne("GestaoInventario.Models.Categoria", "Categoria")
-                        .WithMany()
+                        .WithMany("Produtos")
                         .HasForeignKey("CategoriaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Categoria");
+                });
+
+            modelBuilder.Entity("GestaoInventario.Models.Categoria", b =>
+                {
+                    b.Navigation("Produtos");
                 });
 #pragma warning restore 612, 618
         }

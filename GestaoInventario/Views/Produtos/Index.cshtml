@@ -2,36 +2,59 @@
 
 @{
     Layout = "_Layout";
+    ViewData["Title"] = "Index";
 }
 
-<h1>Produtos</h1>
+<h1>Index</h1>
 
 <p>
-    <a class="btn btn-primary" asp-controller="Produtos" asp-action="Create">Criar Novo</a>
+    <a asp-action="Create" class="btn-custom">Create New</a>
 </p>
-
 <table class="table">
     <thead>
         <tr>
-            <th>Nome</th>
-            <th>Preço</th>
-            <th>Quantidade</th>
-            <th>Categoria</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Preco)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantidade)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockMinimo)
+            </th>
+            <th>
+                @Html.DisplayName("Categoria")
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var produto in Model)
+        @foreach (var item in Model)
         {
             <tr>
-                <td>@produto.Nome</td>
-                <td>@produto.Preco</td>
-                <td>@produto.Quantidade</td>
-                <td>@produto.Categoria?.Nome</td>
                 <td>
-                    <a class="btn btn-secondary" asp-controller="Produtos" asp-action="Edit" asp-route-id="@produto.Id">Editar</a> |
-                    <a class="btn btn-info" asp-controller="Produtos" asp-action="Details" asp-route-id="@produto.Id">Detalhes</a> |
-                    <a class="btn btn-danger" asp-controller="Produtos" asp-action="Delete" asp-route-id="@produto.Id">Eliminar</a>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Preco)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantidade)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StockMinimo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Categoria.Nome)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" data-id="@item.Id" class="editar btn-custom">Editar</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" data-id="@item.Id" class="detalhes btn-custom">Detalhes</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" data-id="@item.Id" class="eliminar btn-custom btn-custom-delete">Eliminar</a>
+
                 </td>
             </tr>
         }

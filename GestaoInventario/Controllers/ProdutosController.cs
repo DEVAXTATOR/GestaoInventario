@@ -1,9 +1,10 @@
-
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using GestaoInventario.Data;
 using GestaoInventario.Models;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GestaoInventario.Controllers
 {
@@ -16,46 +17,75 @@ namespace GestaoInventario.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        // GET: Produtos
+        public async Task<IActionResult> Index()
         {
-            var produtos = _context.Produtos.Include(p => p.Categoria).ToList();
-            return View(produtos);
+            var produtos = _context.Produtos.Include(p => p.Categoria);
+            return View(await produtos.ToListAsync());
         }
 
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Create(Produto produto)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(produto);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(produto);
-        }
-
-        public IActionResult Edit(int? id)
+        // GET: Produtos/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var produto = _context.Produtos.Find(id);
+            var produto = await _context.Produtos
+                .Include(p => p.Categoria)
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (produto == null)
             {
                 return NotFound();
             }
+
             return View(produto);
         }
 
+        // GET: Produtos/Create
+        public IActionResult Create()
+        {
+            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "Nome");
+            return View();
+        }
+
+        // POST: Produtos/Create
         [HttpPost]
-        public IActionResult Edit(int id, Produto produto)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,Nome,Preco,Quantidade,StockMinimo,CategoriaId")] Produto produto)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(produto);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "Nome", produto.CategoriaId);
+            return View(produto);
+        }
+
+        // GET: Produtos/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var produto = await _context.Produtos.FindAsync(id);
+            if (produto == null)
+            {
+                return NotFound();
+            }
+            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "Nome", produto.CategoriaId);
+            return View(produto);
+        }
+
+        // POST: Produtos/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Preco,Quantidade,StockMinimo,CategoriaId")] Produto produto)
         {
             if (id != produto.Id)
             {
@@ -67,7 +97,7 @@ namespace GestaoInventario.Controllers
                 try
                 {
                     _context.Update(produto);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -82,19 +112,21 @@ namespace GestaoInventario.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "Nome", produto.CategoriaId);
             return View(produto);
         }
 
-        public IActionResult Delete(int? id)
+        // GET: Produtos/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var produto = _context.Produtos
+            var produto = await _context.Produtos
                 .Include(p => p.Categoria)
-                .FirstOrDefault(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (produto == null)
             {
                 return NotFound();
@@ -103,36 +135,20 @@ namespace GestaoInventario.Controllers
             return View(produto);
         }
 
+        // POST: Produtos/Delete/5
         [HttpPost, ActionName("Delete")]
-        public IActionResult DeleteConfirmed(int id)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var produto = _context.Produtos.Find(id);
+            var produto = await _context.Produtos.FindAsync(id);
             _context.Produtos.Remove(produto);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProdutoExists(int id)
         {
             return _context.Produtos.Any(e => e.Id == id);
-        }
-
-        public IActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var produto = _context.Produtos
-                .Include(p => p.Categoria)
-                .FirstOrDefault(m => m.Id == id);
-            if (produto == null)
-            {
-                return NotFound();
-            }
-
-            return View(produto);
         }
     }
 }

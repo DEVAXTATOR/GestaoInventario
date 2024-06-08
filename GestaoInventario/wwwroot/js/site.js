@@ -1,30 +1,14 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.editar').forEach(button => {
-        button.addEventListener('click', function () {
-            const id = this.getAttribute('data-id');
+    document.body.addEventListener('click', function (event) {
+        if (event.target.matches('.editar, .editar *')) {
+            const id = event.target.closest('.editar').getAttribute('data-id');
             window.location.href = `/Produtos/Edit/${id}`;
-        });
-    });
-
-    document.querySelectorAll('.detalhes').forEach(button => {
-        button.addEventListener('click', function () {
-            const id = this.getAttribute('data-id');
+        } else if (event.target.matches('.detalhes, .detalhes *')) {
+            const id = event.target.closest('.detalhes').getAttribute('data-id');
             window.location.href = `/Produtos/Details/${id}`;
-        });
-    });
-
-    document.querySelectorAll('.eliminar').forEach(button => {
-        button.addEventListener('click', function () {
-            const id = this.getAttribute('data-id');
+        } else if (event.target.matches('.eliminar, .eliminar *')) {
+            const id = event.target.closest('.eliminar').getAttribute('data-id');
             window.location.href = `/Produtos/Delete/${id}`;
-        });
-    });
-
-    document.querySelector('.btn-primary').addEventListener('click', function () {
-        window.location.href = '/Produtos/Create';
-    });
-
-    document.querySelector('a[href="/Produtos"]').addEventListener('click', function () {
-        window.location.href = '/Produtos';
+        }
     });
 });

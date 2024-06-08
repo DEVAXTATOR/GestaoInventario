@@ -1,12 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
 
 namespace GestaoInventario.Models
 {
     public class Categoria
     {
         public int Id { get; set; }
-
-        [Required]
-        public string Nome { get; set; } = string.Empty;
+        public string Nome { get; set; }
+        public ICollection<Produto> Produtos { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using GestaoInventario.Data;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews(); // Adiciona suporte para MVC
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddLogging(); // Adicionar suporte para logging
 
 var app = builder.Build();
 
