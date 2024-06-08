@@ -1,12 +1,11 @@
-@model GestaoInventario.Models.MovimentacaoStock
+﻿@model GestaoInventario.Models.MovimentacaoStock
 
 @{
     Layout = "_Layout";
 }
 
-<h1>Eliminar Movimentação de Stock</h1>
+<h1>Detalhes da Movimentação de Stock</h1>
 
-<h3>Tem a certeza que deseja eliminar esta movimentação de stock?</h3>
 <div>
     <h4>Movimentação de Stock</h4>
     <hr />
@@ -30,10 +29,9 @@
             @Model.Data.ToShortDateString()
         </dd>
     </dl>
+</div>
 
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
-        <a asp-action="Index" class="btn btn-secondary">Voltar</a>
-    </form>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a> |
+    <a asp-action="Index" class="btn btn-secondary">Voltar para a lista</a>
 </div>

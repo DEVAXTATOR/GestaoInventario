@@ -1,5 +1,5 @@
-﻿using GestaoInventario.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using GestaoInventario.Models;
 
 namespace GestaoInventario.Data
 {
@@ -13,12 +13,7 @@ namespace GestaoInventario.Data
         public DbSet<Produto> Produtos { get; set; }
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<MovimentacaoStock> MovimentacoesStock { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-
-            // Configuração adicional pode ser feita aqui, se necessário
-        }
+        public DbSet<Venda> Vendas { get; set; }
+        public DbSet<Compra> Compras { get; set; }
     }
 }
