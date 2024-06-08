@@ -27,7 +27,16 @@ namespace GestaoInventario.Controllers
         // GET: MovimentacoesStock/Create
         public IActionResult Create()
         {
-            ViewBag.ProdutoId = new SelectList(_context.Produtos, "Id", "Nome");
+            var produtos = _context.Produtos.ToList();
+            if (!produtos.Any())
+            {
+                ViewBag.ProdutosMessage = "Nenhum produto disponível.";
+            }
+            else
+            {
+                ViewBag.Produtos = produtos;
+                ViewBag.ProdutoId = new SelectList(produtos, "Id", "Nome");
+            }
             return View();
         }
 
@@ -42,7 +51,16 @@ namespace GestaoInventario.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.ProdutoId = new SelectList(_context.Produtos, "Id", "Nome", movimentacaoStock.ProdutoId);
+            var produtos = _context.Produtos.ToList();
+            if (!produtos.Any())
+            {
+                ViewBag.ProdutosMessage = "Nenhum produto disponível.";
+            }
+            else
+            {
+                ViewBag.Produtos = produtos;
+                ViewBag.ProdutoId = new SelectList(produtos, "Id", "Nome", movimentacaoStock.ProdutoId);
+            }
             return View(movimentacaoStock);
         }
 

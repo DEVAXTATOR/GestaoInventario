@@ -41,6 +41,6 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Eliminar" class="btn btn-danger" /> |
-        <a asp-action="Index" class="btn btn-secondary">Voltar para a lista</a>
+        <button type="button" onclick="history.back()" class="btn btn-secondary">Cancelar</button>
     </form>
 </div>

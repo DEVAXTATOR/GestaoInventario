@@ -15,16 +15,19 @@ namespace GestaoInventario.Controllers
             _context = context;
         }
 
+        // GET: Categorias
         public IActionResult Index()
         {
             return View(_context.Categorias.ToList());
         }
 
+        // GET: Categorias/Create
         public IActionResult Create()
         {
             return View();
         }
 
+        // POST: Categorias/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("Id,Nome")] Categoria categoria)
@@ -38,6 +41,7 @@ namespace GestaoInventario.Controllers
             return View(categoria);
         }
 
+        // GET: Categorias/Edit/5
         public IActionResult Edit(int? id)
         {
             if (id == null)
@@ -53,6 +57,7 @@ namespace GestaoInventario.Controllers
             return View(categoria);
         }
 
+        // POST: Categorias/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, [Bind("Id,Nome")] Categoria categoria)
@@ -85,6 +90,7 @@ namespace GestaoInventario.Controllers
             return View(categoria);
         }
 
+        // GET: Categorias/Delete/5
         public IActionResult Delete(int? id)
         {
             if (id == null)
@@ -101,6 +107,7 @@ namespace GestaoInventario.Controllers
             return View(categoria);
         }
 
+        // POST: Categorias/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
@@ -111,6 +118,7 @@ namespace GestaoInventario.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // GET: Categorias/Details/5
         public IActionResult Details(int? id)
         {
             if (id == null)
