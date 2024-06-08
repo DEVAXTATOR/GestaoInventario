@@ -46,7 +46,8 @@ namespace GestaoInventario.Controllers
         // GET: Produtos/Create
         public IActionResult Create()
         {
-            ViewBag.CategoriaId = new SelectList(_context.Categorias, "Id", "Nome");
+            var categorias = _context.Categorias.ToList();
+            ViewBag.Categorias = categorias; // Passando as categorias para a ViewBag
             return View();
         }
 
@@ -61,7 +62,8 @@ namespace GestaoInventario.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.CategoriaId = new SelectList(_context.Categorias, "Id", "Nome", produto.CategoriaId);
+            var categorias = _context.Categorias.ToList();
+            ViewBag.Categorias = categorias; // Passando as categorias para a ViewBag novamente em caso de erro
             return View(produto);
         }
 
@@ -78,7 +80,8 @@ namespace GestaoInventario.Controllers
             {
                 return NotFound();
             }
-            ViewBag.CategoriaId = new SelectList(_context.Categorias, "Id", "Nome", produto.CategoriaId);
+            var categorias = _context.Categorias.ToList();
+            ViewBag.Categorias = categorias; // Passando as categorias para a ViewBag
             return View(produto);
         }
 
@@ -112,7 +115,8 @@ namespace GestaoInventario.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.CategoriaId = new SelectList(_context.Categorias, "Id", "Nome", produto.CategoriaId);
+            var categorias = _context.Categorias.ToList();
+            ViewBag.Categorias = categorias; // Passando as categorias para a ViewBag novamente em caso de erro
             return View(produto);
         }
 
