@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GestaoInventario.Models
 {
@@ -10,18 +11,24 @@ namespace GestaoInventario.Models
         public string Nome { get; set; }
 
         [Required]
+        [DataType(DataType.Currency)]
         public decimal Preco { get; set; }
 
         [Required]
         public int Quantidade { get; set; }
 
         [Required]
-        public int StockMinimo { get; set; }
+        [Display(Name = "Categoria")]
+        public int CategoriaId { get; set; }
 
-        public string Descricao { get; set; }
+        [ForeignKey("CategoriaId")]
+        public virtual Categoria Categoria { get; set; }
 
         [Required]
-        public int CategoriaId { get; set; }
-        public Categoria Categoria { get; set; }
+        [Display(Name = "Stock Mínimo")]
+        public int StockMinimo { get; set; }
+
+        [Required]
+        public string Descricao { get; set; }
     }
 }

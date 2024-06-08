@@ -1,13 +1,14 @@
 ﻿@model GestaoInventario.Models.MovimentacaoStock
 
 @{
+    ViewData["Title"] = "Detalhes da Movimentação de Stock";
     Layout = "_Layout";
 }
 
 <h1>Detalhes da Movimentação de Stock</h1>
 
 <div>
-    <h4>Movimentação de Stock</h4>
+    <h4>MovimentacaoStock</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -28,9 +29,14 @@
         <dd class="col-sm-10">
             @Model.Data.ToShortDateString()
         </dd>
+        <dt class="col-sm-2">
+            É Entrada?
+        </dt>
+        <dd class="col-sm-10">
+            @(Model.IsEntrada ? "Sim" : "Não")
+        </dd>
     </dl>
 </div>
-
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a> |
     <a asp-action="Index" class="btn btn-secondary">Voltar para a lista</a>

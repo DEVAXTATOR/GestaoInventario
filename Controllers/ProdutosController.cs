@@ -24,6 +24,25 @@ namespace GestaoInventario.Controllers
             return View(await produtos.ToListAsync());
         }
 
+        // GET: Produtos/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var produto = await _context.Produtos
+                .Include(p => p.Categoria)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (produto == null)
+            {
+                return NotFound();
+            }
+
+            return View(produto);
+        }
+
         // GET: Produtos/Create
         public IActionResult Create()
         {

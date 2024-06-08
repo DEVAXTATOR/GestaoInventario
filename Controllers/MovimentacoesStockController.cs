@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using GestaoInventario.Data;
 using GestaoInventario.Models;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GestaoInventario.Controllers
@@ -16,53 +17,58 @@ namespace GestaoInventario.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        // GET: MovimentacoesStock
+        public async Task<IActionResult> Index()
         {
-            var movimentacoes = _context.MovimentacoesStock.Include(m => m.Produto).ToList();
-            return View(movimentacoes);
+            var movimentacoes = _context.MovimentacoesStock.Include(m => m.Produto);
+            return View(await movimentacoes.ToListAsync());
         }
 
+        // GET: MovimentacoesStock/Create
         public IActionResult Create()
         {
-            ViewData["ProdutoId"] = new SelectList(_context.Produtos, "Id", "Nome");
+            ViewBag.ProdutoId = new SelectList(_context.Produtos, "Id", "Nome");
             return View();
         }
 
+        // POST: MovimentacoesStock/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Id,ProdutoId,Quantidade,Data")] MovimentacaoStock movimentacao)
+        public async Task<IActionResult> Create([Bind("Id,ProdutoId,Quantidade,Data,IsEntrada")] MovimentacaoStock movimentacaoStock)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(movimentacao);
-                _context.SaveChanges();
+                _context.Add(movimentacaoStock);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProdutoId"] = new SelectList(_context.Produtos, "Id", "Nome", movimentacao.ProdutoId);
-            return View(movimentacao);
+            ViewBag.ProdutoId = new SelectList(_context.Produtos, "Id", "Nome", movimentacaoStock.ProdutoId);
+            return View(movimentacaoStock);
         }
 
-        public IActionResult Edit(int? id)
+        // GET: MovimentacoesStock/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var movimentacao = _context.MovimentacoesStock.Find(id);
-            if (movimentacao == null)
+            var movimentacaoStock = await _context.MovimentacoesStock.FindAsync(id);
+            if (movimentacaoStock == null)
             {
                 return NotFound();
             }
-            ViewData["ProdutoId"] = new SelectList(_context.Produtos, "Id", "Nome", movimentacao.ProdutoId);
-            return View(movimentacao);
+            ViewBag.ProdutoId = new SelectList(_context.Produtos, "Id", "Nome", movimentacaoStock.ProdutoId);
+            return View(movimentacaoStock);
         }
 
+        // POST: MovimentacoesStock/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,ProdutoId,Quantidade,Data")] MovimentacaoStock movimentacao)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ProdutoId,Quantidade,Data,IsEntrada")] MovimentacaoStock movimentacaoStock)
         {
-            if (id != movimentacao.Id)
+            if (id != movimentacaoStock.Id)
             {
                 return NotFound();
             }
@@ -71,12 +77,12 @@ namespace GestaoInventario.Controllers
             {
                 try
                 {
-                    _context.Update(movimentacao);
-                    _context.SaveChanges();
+                    _context.Update(movimentacaoStock);
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MovimentacaoStockExists(movimentacao.Id))
+                    if (!MovimentacaoStockExists(movimentacaoStock.Id))
                     {
                         return NotFound();
                     }
@@ -87,54 +93,57 @@ namespace GestaoInventario.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProdutoId"] = new SelectList(_context.Produtos, "Id", "Nome", movimentacao.ProdutoId);
-            return View(movimentacao);
+            ViewBag.ProdutoId = new SelectList(_context.Produtos, "Id", "Nome", movimentacaoStock.ProdutoId);
+            return View(movimentacaoStock);
         }
 
-        public IActionResult Delete(int? id)
+        // GET: MovimentacoesStock/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var movimentacao = _context.MovimentacoesStock
+            var movimentacaoStock = await _context.MovimentacoesStock
                 .Include(m => m.Produto)
-                .FirstOrDefault(m => m.Id == id);
-            if (movimentacao == null)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (movimentacaoStock == null)
             {
                 return NotFound();
             }
 
-            return View(movimentacao);
+            return View(movimentacaoStock);
         }
 
+        // GET: MovimentacoesStock/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var movimentacaoStock = await _context.MovimentacoesStock
+                .Include(m => m.Produto)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (movimentacaoStock == null)
+            {
+                return NotFound();
+            }
+
+            return View(movimentacaoStock);
+        }
+
+        // POST: MovimentacoesStock/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var movimentacao = _context.MovimentacoesStock.Find(id);
-            _context.MovimentacoesStock.Remove(movimentacao);
-            _context.SaveChanges();
+            var movimentacaoStock = await _context.MovimentacoesStock.FindAsync(id);
+            _context.MovimentacoesStock.Remove(movimentacaoStock);
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        public IActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var movimentacao = _context.MovimentacoesStock
-                .Include(m => m.Produto)
-                .FirstOrDefault(m => m.Id == id);
-            if (movimentacao == null)
-            {
-                return NotFound();
-            }
-
-            return View(movimentacao);
         }
 
         private bool MovimentacaoStockExists(int id)
