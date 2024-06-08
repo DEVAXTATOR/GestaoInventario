@@ -60,6 +60,7 @@ namespace GestaoInventario.Controllers
             {
                 _context.Add(produto);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = $"Produto '{produto.Nome}' criado com sucesso!";
                 return RedirectToAction(nameof(Index));
             }
             var categorias = _context.Categorias.ToList();
