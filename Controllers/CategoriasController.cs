@@ -37,19 +37,13 @@ namespace GestaoInventario.Controllers
         }
 
         // GET: Categorias/Edit/5
-        public IActionResult Edit(int? id)
+        public IActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var categoria = _context.Categorias.Find(id);
             if (categoria == null)
             {
                 return NotFound();
             }
-
             return View(categoria);
         }
 
@@ -62,26 +56,19 @@ namespace GestaoInventario.Controllers
             {
                 return NotFound();
             }
-
             categoria.Nome = nome;
             _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index");
         }
 
         // GET: Categorias/Delete/5
-        public IActionResult Delete(int? id)
+        public IActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var categoria = _context.Categorias.FirstOrDefault(c => c.Id == id);
+            var categoria = _context.Categorias.Find(id);
             if (categoria == null)
             {
                 return NotFound();
             }
-
             return View(categoria);
         }
 
@@ -90,26 +77,13 @@ namespace GestaoInventario.Controllers
         public IActionResult DeleteConfirmed(int id)
         {
             var categoria = _context.Categorias.Find(id);
-            _context.Categorias.Remove(categoria);
-            _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
-        }
-
-        // GET: Categorias/Details/5
-        public IActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var categoria = _context.Categorias.FirstOrDefault(c => c.Id == id);
             if (categoria == null)
             {
                 return NotFound();
             }
-
-            return View(categoria);
+            _context.Categorias.Remove(categoria);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
     }
 }

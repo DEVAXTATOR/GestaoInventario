@@ -20,7 +20,7 @@ namespace GestaoInventario.Controllers
         // GET: Produtos
         public async Task<IActionResult> Index()
         {
-            var produtos = _context.Produtos.Include(p => p.Categoria);
+            var produtos = _context.Produtos.Include(p => p.Categoria);  // Assegura que a categoria está incluída
             return View(await produtos.ToListAsync());
         }
 
@@ -46,15 +46,12 @@ namespace GestaoInventario.Controllers
         // GET: Produtos/Create
         public IActionResult Create()
         {
-            var categorias = _context.Categorias.ToList();
-            ViewBag.Categorias = categorias; // Passando as categorias para a ViewBag
+            ViewBag.Categorias = _context.Categorias.ToList();  // Preenche ViewBag com a lista de categorias
             return View();
         }
 
-        // POST: Produtos/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Preco,Quantidade,StockMinimo,Descricao,CategoriaId")] Produto produto)
+        public async Task<IActionResult> Create(Produto produto)
         {
             if (ModelState.IsValid)
             {
@@ -62,10 +59,11 @@ namespace GestaoInventario.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            var categorias = _context.Categorias.ToList();
-            ViewBag.Categorias = categorias; // Passando as categorias para a ViewBag novamente em caso de erro
+            // Re-inicializa a ViewBag se a submissão falhar
+            ViewBag.Categorias = new SelectList(_context.Categorias, "Id", "Nome");
             return View(produto);
         }
+
 
         // GET: Produtos/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -80,15 +78,13 @@ namespace GestaoInventario.Controllers
             {
                 return NotFound();
             }
-            var categorias = _context.Categorias.ToList();
-            ViewBag.Categorias = categorias; // Passando as categorias para a ViewBag
+            ViewBag.CategoriaId = new SelectList(_context.Categorias, "Id", "Nome", produto.CategoriaId);
             return View(produto);
         }
 
         // POST: Produtos/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Preco,Quantidade,StockMinimo,Descricao,CategoriaId")] Produto produto)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Preco,Quantidade,CategoriaId")] Produto produto)
         {
             if (id != produto.Id)
             {
@@ -115,8 +111,7 @@ namespace GestaoInventario.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            var categorias = _context.Categorias.ToList();
-            ViewBag.Categorias = categorias; // Passando as categorias para a ViewBag novamente em caso de erro
+            ViewBag.CategoriaId = new SelectList(_context.Categorias, "Id", "Nome", produto.CategoriaId);
             return View(produto);
         }
 
@@ -141,7 +136,6 @@ namespace GestaoInventario.Controllers
 
         // POST: Produtos/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var produto = await _context.Produtos.FindAsync(id);
