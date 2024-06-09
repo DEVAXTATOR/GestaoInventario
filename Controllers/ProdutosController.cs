@@ -5,6 +5,7 @@ using GestaoInventario.Models;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 
 namespace GestaoInventario.Controllers
 {
@@ -20,50 +21,33 @@ namespace GestaoInventario.Controllers
         // GET: Produtos
         public async Task<IActionResult> Index()
         {
-            var produtos = _context.Produtos.Include(p => p.Categoria);  // Assegura que a categoria está incluída
-            return View(await produtos.ToListAsync());
+            var produtos = await _context.Produtos.Include(p => p.Categoria).ToListAsync();
+            return View(produtos);
         }
 
-        // GET: Produtos/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var produto = await _context.Produtos
-                .Include(p => p.Categoria)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (produto == null)
-            {
-                return NotFound();
-            }
-
-            return View(produto);
-        }
-
-        // GET: Produtos/Create
         public IActionResult Create()
         {
-            ViewBag.Categorias = _context.Categorias.ToList();  // Preenche ViewBag com a lista de categorias
+            // Carregar todas as categorias para a ViewBag
+            ViewBag.Categorias = _context.Categorias.ToList();
             return View();
         }
 
+        // POST: Produtos/Create
         [HttpPost]
-        public async Task<IActionResult> Create(Produto produto)
+        public async Task<IActionResult> Create([Bind("Id,Nome,Preco,Quantidade,CategoriaId")] Produto produto)
         {
+            // Log para depuração
+            Console.WriteLine($"Nome: {produto.Nome}, Preço: {produto.Preco}, Quantidade: {produto.Quantidade}, CategoriaId: {produto.CategoriaId}");
+
             if (ModelState.IsValid)
             {
                 _context.Add(produto);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            // Re-inicializa a ViewBag se a submissão falhar
-            ViewBag.Categorias = new SelectList(_context.Categorias, "Id", "Nome");
+            ViewBag.Categorias = new SelectList(_context.Categorias, "Id", "Nome", produto.CategoriaId);
             return View(produto);
         }
-
 
         // GET: Produtos/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -78,7 +62,7 @@ namespace GestaoInventario.Controllers
             {
                 return NotFound();
             }
-            ViewBag.CategoriaId = new SelectList(_context.Categorias, "Id", "Nome", produto.CategoriaId);
+            ViewBag.Categorias = new SelectList(_context.Categorias, "Id", "Nome", produto.CategoriaId);
             return View(produto);
         }
 
@@ -111,7 +95,7 @@ namespace GestaoInventario.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.CategoriaId = new SelectList(_context.Categorias, "Id", "Nome", produto.CategoriaId);
+            ViewBag.Categorias = new SelectList(_context.Categorias, "Id", "Nome", produto.CategoriaId);
             return View(produto);
         }
 
