@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using GestaoInventario.Data;
 using GestaoInventario.Models;
+using GestaoInventario.Data;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
 namespace GestaoInventario.Controllers
 {
@@ -15,7 +14,7 @@ namespace GestaoInventario.Controllers
             _context = context;
         }
 
-        // GET: Categorias
+        // GET: Categorias/Index
         public IActionResult Index()
         {
             return View(_context.Categorias.ToList());
@@ -29,16 +28,12 @@ namespace GestaoInventario.Controllers
 
         // POST: Categorias/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Id,Nome")] Categoria categoria)
+        public IActionResult Create(string nome)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(categoria);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(categoria);
+            var categoria = new Categoria { Nome = nome };
+            _context.Categorias.Add(categoria);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         // GET: Categorias/Edit/5
@@ -54,40 +49,23 @@ namespace GestaoInventario.Controllers
             {
                 return NotFound();
             }
+
             return View(categoria);
         }
 
         // POST: Categorias/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,Nome")] Categoria categoria)
+        public IActionResult Edit(int id, string nome)
         {
-            if (id != categoria.Id)
+            var categoria = _context.Categorias.Find(id);
+            if (categoria == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(categoria);
-                    _context.SaveChanges();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CategoriaExists(categoria.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(categoria);
+            categoria.Nome = nome;
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Categorias/Delete/5
@@ -98,7 +76,7 @@ namespace GestaoInventario.Controllers
                 return NotFound();
             }
 
-            var categoria = _context.Categorias.FirstOrDefault(m => m.Id == id);
+            var categoria = _context.Categorias.FirstOrDefault(c => c.Id == id);
             if (categoria == null)
             {
                 return NotFound();
@@ -109,7 +87,6 @@ namespace GestaoInventario.Controllers
 
         // POST: Categorias/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
             var categoria = _context.Categorias.Find(id);
@@ -126,18 +103,13 @@ namespace GestaoInventario.Controllers
                 return NotFound();
             }
 
-            var categoria = _context.Categorias.FirstOrDefault(m => m.Id == id);
+            var categoria = _context.Categorias.FirstOrDefault(c => c.Id == id);
             if (categoria == null)
             {
                 return NotFound();
             }
 
             return View(categoria);
-        }
-
-        private bool CategoriaExists(int id)
-        {
-            return _context.Categorias.Any(e => e.Id == id);
         }
     }
 }

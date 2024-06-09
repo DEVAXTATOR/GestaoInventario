@@ -1,11 +1,11 @@
 @model GestaoInventario.Models.Categoria
 
 @{
-    Layout = "_Layout";
     ViewData["Title"] = "Eliminar Categoria";
+    Layout = "_Layout";
 }
 
-<h1>Eliminar Categoria</h1>
+<h1>@ViewData["Title"]</h1>
 
 <h3>Tem a certeza que deseja eliminar esta categoria?</h3>
 <div>
@@ -13,16 +13,16 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            Nome
+            Nome:
         </dt>
         <dd class="col-sm-10">
             @Model.Nome
         </dd>
     </dl>
 
-    <form asp-action="Delete" method="post">
+    <form asp-action="DeleteConfirmed" method="post">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+        <button type="submit" class="btn btn-danger">Eliminar</button>
         <button type="button" onclick="history.back()" class="btn btn-secondary">Cancelar</button>
     </form>
 </div>
