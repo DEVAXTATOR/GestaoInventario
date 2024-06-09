@@ -4,6 +4,12 @@
     ViewData["Title"] = "Criar Novo Produto";
     Layout = "_Layout";
 }
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <strong>Erro:</strong> Por favor, corrija os erros e tente novamente.
+    </div>
+}
 
 <h1>Criar Novo Produto</h1>
 
@@ -28,13 +34,15 @@
         <select asp-for="CategoriaId" class="form-control">
             @foreach (var categoria in ViewBag.Categorias)
             {
-                <option value="@categoria.Id">@categoria.Nome</option>
+                <option value="@categoria.Value">@categoria.Text</option>
             }
         </select>
-        <span asp-validation-for="CategoriaId" class="text-danger"></span>
+
     </div>
+
+
     <button type="submit" class="btn btn-primary">Criar</button>
-    <a asp-action="Index" class="btn btn-secondary">Voltar para a lista</a>
+    <button type="button" onclick="history.back()" class="btn btn-secondary">Cancelar</button>
 </form>
 
 @section Scripts {
@@ -42,3 +50,4 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
